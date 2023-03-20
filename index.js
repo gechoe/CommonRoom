@@ -63,14 +63,15 @@ app.use('/create', (req, res) =>
 
 //endpoint for deleting a common room
 app.use('/delete', (req, res) =>
-       var commonRoom = {'commonRooms' : req.query.commonRooms};
-	Room.findOneAndDelete(commonRoom, (err, room) => {
+       var CommonRoom = {'CommonRoom' : req.query.CommonRoom};
+	Room.findOneAndDelete(CommonRoom, (err, room) => {
 		if (err) {
 			console.log("error" + err);
 		} else if (!room) {
 			console.log("not a common room" + err);
 		}
 	})
+	res.send('successfully deleted' + CommonRoom.name + ' from the database');
 	res.redirect('/all');
 });
 /*************************************************/
