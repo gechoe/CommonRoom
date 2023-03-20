@@ -36,7 +36,18 @@ app.rooms('/all', (req, res) => {
 	//TO DO when Aminas headache clears up
 });
 
-
+//endpoint for deleting a common room
+app.use('/delete', (req, res) =>
+       var commonRoom = {'commonRooms' : req.query.commonRooms};
+	Room.findOneAndDelete(commonRoom, (err, room) => {
+		if (err) {
+			console.log("error" + err);
+		} else if (!room) {
+			console.log("not a common room" + err);
+		}
+	})
+	res.redirect('/all');
+});
 /*************************************************/
 
 app.use('/public', express.static('public'));
