@@ -14,7 +14,7 @@ var roomSchema = new Schema({
    timeSlots: { type: Array, required: true, unique: false },
 });
 
-// export personSchema as a class called CommonRoom
+// export commonRoomSchema as a class called CommonRoom
 module.exports = mongoose.model('CommonRoom', roomSchema);
 
 roomSchema.methods.standardizeName = function () {
