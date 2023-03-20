@@ -36,6 +36,28 @@ app.rooms('/all', (req, res) => {
 	//TO DO when Aminas headache clears up
 });
 
+//endpoint for creating a new common room from "Commom Room" request form
+app.use('/create', (req, res) =>
+	var newCommonRoom = new CommonRoom ({
+			name: req.body.name,
+			age: req.body.age,
+		    });
+
+		// save the person to the database
+		newPerson.save( (err) => { 
+		if (err) {
+		    	res.type('html').status(200);
+		    	res.write('uh oh: ' + err);
+		    	console.log(err);
+		    	res.end();
+		}
+		else {
+			    // display the "successfull created" message
+			res.send('successfully added ' + newPerson.name + ' to the database');
+		}
+	});
+});
+
 //endpoint for deleting a common room
 app.use('/delete', (req, res) =>
        var commonRoom = {'commonRooms' : req.query.commonRooms};
