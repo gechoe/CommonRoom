@@ -36,7 +36,7 @@ app.rooms('/all', (req, res) => {
 	//TO DO when Aminas headache clears up
 });
 
-//endpoint for creating a new common room from "Commom Room" request form
+//endpoint for creating a new common room from "Common Room" request form
 app.use('/create', (req, res) =>
 	var newCommonRoom = new CommonRoom ({
 			roomName: req.body.name
