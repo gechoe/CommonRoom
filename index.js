@@ -39,12 +39,15 @@ app.rooms('/all', (req, res) => {
 //endpoint for creating a new common room from "Commom Room" request form
 app.use('/create', (req, res) =>
 	var newCommonRoom = new CommonRoom ({
-			name: req.body.name,
-			age: req.body.age,
+			roomName: req.body.name
+			capacity: req.body.capacity
+			dorm: req.body.dorm
+			floor: req.body.floor
+			timeSlots: req.body.time
 		    });
 
-		// save the person to the database
-		newPerson.save( (err) => { 
+		// save the Common Room to the database
+		newCommonRoom.save( (err) => { 
 		if (err) {
 		    	res.type('html').status(200);
 		    	res.write('uh oh: ' + err);
@@ -52,8 +55,8 @@ app.use('/create', (req, res) =>
 		    	res.end();
 		}
 		else {
-			    // display the "successfull created" message
-			res.send('successfully added ' + newPerson.name + ' to the database');
+			 // display the "successfull created" message
+			res.send('successfully added ' + newCommonRoom.name + ' to the database');
 		}
 	});
 });
