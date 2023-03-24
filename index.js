@@ -32,13 +32,44 @@ app.use('/all', (req, res) => {
 	//TO DO when Aminas headache clears up
 });
 
-app.rooms('/all', (req, res) => {
-	//TO DO when Aminas headache clears up
+// endpoint for showing all the common rooms in the database
+app.use('/allRooms', (req, res) => {
+	commonRooms.find( {}, (err, cR) => {
+		if (err) {
+		    res.type('html').status(200);
+		    console.log('uh oh' + err);
+		    res.write(err);
+		}
+		else {
+		    if (cR.length == 0) {
+			res.type('html').status(200);
+			res.write('There are no common rooms');
+			res.end();
+			return;
+		    }
+		    else {
+			res.type('html').status(200);
+			res.write('Here are the common rooms in the database:');
+			res.write('<ul>');
+			// show all the common rooms
+			cR.forEach( (commonroom) => {
+			    res.write('<li>');
+			    res.write('Name: ' + commonroom.roomName + '; capacity: ' + commonroom.capacity + '; dorm name: ' + commonroom.dorm + '; floor number: ' + commonroom.floor + '; time slots: ' + commonroom.timeSlots  );
+			    // this creates a link to the /delete endpoint
+			    res.write(" <a href=\"/delete?name=" + commonroom.roomName + "\">[Delete]</a>");
+			    res.write('</li>');
+					 
+			});
+			res.write('</ul>');
+			res.end();
+		    }
+		}
+	    }).sort({ 'dorm': 'asc' });
 });
 
 //endpoint for creating a new common room from "Common Room" request form
-app.use('/create', (req, res) => {
-	var newCommonRoom = new CommonRoom ({
+app.use('/create', (req, res) =>{
+	var newCommonRoom = new commonRooms ({
 			roomName: req.body.name,
 			capacity: req.body.capacity,
 			dorm: req.body.dorm,
@@ -56,7 +87,7 @@ app.use('/create', (req, res) => {
 		}
 		else {
 			 // display the "successfull created" message
-			res.send('successfully added ' + newCommonRoom.name + ' to the database');
+			res.send('successfully added ' + newCommonRoom.roomName + ' to the database');
 		}
 	});
 });
