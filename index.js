@@ -77,7 +77,7 @@ app.use('/delete', (req, res) =>
 
 //endpoint for editing the average capacity of a communal space
 app.use('/update', (req, res) => {
-	var CommonRoom = {CommonRoom' : req.query.CommonRoom}; // common room we are updating
+	var CommonRoom = {'CommonRoom' : req.query.CommonRoom}; // common room we are updating
 	var newCap = {'$set' : {'capacity' : req.body.capacity}} // changing the capacity of this common room
 	
 	Room.findOneAndUpdate(CommonRoom, newCap, (err, orig) => {
@@ -99,7 +99,7 @@ app.use('/update', (req, res) => {
 
 // endpoint for editing the communal space name 
 app.use('/update', (req, res) => {
-	var CommonRoom = {CommonRoom' : req.query.CommonRoom}; // common room we are updating
+	var CommonRoom = {'CommonRoom' : req.query.CommonRoom}; // common room we are updating
 	var newName = {'$set' : {'name' : req.body.name}} // changing the name of this communal space
 	
 	Room.findOneAndUpdate(CommonRoom, newName, (err, orig) = > {
@@ -121,7 +121,7 @@ app.use('/update', (req, res) => {
 
 // endpoint for editing the location marks on the map (floor)
 app.use('/update', (req, res) => {
-	var CommonRoom = {CommonRoom' : req.query.CommonRoom}; // common room we are updating
+	var CommonRoom = {'CommonRoom' : req.query.CommonRoom}; // common room we are updating
 	var newLoc = {'$set' : {'floor' : req.body.floor}} // changing the floor location of this communal space
 	
 	Room.findOneAndUpdate(CommonRoom, newLoc, (err, orig) = > {
