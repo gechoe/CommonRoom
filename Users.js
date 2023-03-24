@@ -16,6 +16,6 @@ var userSchema = new Schema({
    role: { type: String, required: false }
 });
 
-// export personSchema as a class called Person
+// export userSchema as a class called User
 module.exports = mongoose.model('User', userSchema);
 
