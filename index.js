@@ -37,12 +37,12 @@ app.rooms('/all', (req, res) => {
 });
 
 //endpoint for creating a new common room from "Common Room" request form
-app.use('/create', (req, res) =>
+app.use('/create', (req, res) => {
 	var newCommonRoom = new CommonRoom ({
-			roomName: req.body.name
-			capacity: req.body.capacity
-			dorm: req.body.dorm
-			floor: req.body.floor
+			roomName: req.body.name,
+			capacity: req.body.capacity,
+			dorm: req.body.dorm,
+			floor: req.body.floor,
 			timeSlots: req.body.time
 		    });
 
@@ -62,15 +62,15 @@ app.use('/create', (req, res) =>
 });
 
 //endpoint for deleting a common room
-app.use('/delete', (req, res) =>
+app.use('/delete', (req, res) => {
        var CommonRoom = {'CommonRoom' : req.query.CommonRoom};
-	Room.findOneAndDelete(CommonRoom, (err, CommonRoom.name) => {
+	Room.findOneAndDelete(CommonRoom, (err, room) => {
 		if (err) {
 			console.log("error" + err);
-		} else if (!CommonRoom.name) {
+		} else if (!room) {
 			console.log("not a common room" + err);
 		}
-	})
+	});
 	res.send('successfully deleted' + CommonRoom.name + ' from the database');
 	res.redirect('/all');
 });
@@ -102,7 +102,7 @@ app.use('/update', (req, res) => {
 	var CommonRoom = {'CommonRoom' : req.query.CommonRoom}; // common room we are updating
 	var newName = {'$set' : {'name' : req.body.name}} // changing the name of this communal space
 	
-	Room.findOneAndUpdate(CommonRoom, newName, (err, orig) = > {
+	Room.findOneAndUpdate(CommonRoom, newName, (err, orig) => {
 		if (err) {
 			res.type('html').status(200);
 		    	console.log(err);
@@ -124,7 +124,7 @@ app.use('/update', (req, res) => {
 	var CommonRoom = {'CommonRoom' : req.query.CommonRoom}; // common room we are updating
 	var newLoc = {'$set' : {'floor' : req.body.floor}} // changing the floor location of this communal space
 	
-	Room.findOneAndUpdate(CommonRoom, newLoc, (err, orig) = > {
+	Room.findOneAndUpdate(CommonRoom, newLoc, (err, orig) => {
 		if (err) {
 			res.type('html').status(200);
 		    	console.log(err);
