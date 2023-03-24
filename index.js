@@ -64,15 +64,81 @@ app.use('/create', (req, res) =>
 //endpoint for deleting a common room
 app.use('/delete', (req, res) =>
        var CommonRoom = {'CommonRoom' : req.query.CommonRoom};
-	Room.findOneAndDelete(CommonRoom, (err, room) => {
+	Room.findOneAndDelete(CommonRoom, (err, CommonRoom.name) => {
 		if (err) {
 			console.log("error" + err);
-		} else if (!room) {
+		} else if (!CommonRoom.name) {
 			console.log("not a common room" + err);
 		}
 	})
 	res.send('successfully deleted' + CommonRoom.name + ' from the database');
 	res.redirect('/all');
+});
+
+//endpoint for editing the average capacity of a communal space
+app.use('/update', (req, res) => {
+	var CommonRoom = {CommonRoom' : req.query.CommonRoom}; // common room we are updating
+	var newCap = {'$set' : {'capacity' : req.body.capacity}} // changing the capacity of this common room
+	
+	Room.findOneAndUpdate(CommonRoom, newCap, (err, orig) => {
+		if (err) {
+			res.type('html').status(200);
+		    	console.log(err);
+		    	res.end();
+		}
+		else if (!orig) {
+			res.type('html').status(200);
+		    	console.log("original capacity not found "+ err);
+		    	res.end();
+		}
+		else {
+			res.send('successfully update the capacity of common room ' + CommonRoom.name);
+		}	    
+	});	
+});
+
+// endpoint for editing the communal space name 
+app.use('/update', (req, res) => {
+	var CommonRoom = {CommonRoom' : req.query.CommonRoom}; // common room we are updating
+	var newName = {'$set' : {'name' : req.body.name}} // changing the name of this communal space
+	
+	Room.findOneAndUpdate(CommonRoom, newName, (err, orig) = > {
+		if (err) {
+			res.type('html').status(200);
+		    	console.log(err);
+		    	res.end();
+		}
+		else if (!orig) {
+			res.type('html').status(200);
+		    	console.log("original common room name not found "+ err);
+		    	res.end();
+		}
+		else {
+			res.send('successfully update the name of common room ' + CommonRoom.name);
+		}	
+	});
+});
+
+// endpoint for editing the location marks on the map (floor)
+app.use('/update', (req, res) => {
+	var CommonRoom = {CommonRoom' : req.query.CommonRoom}; // common room we are updating
+	var newLoc = {'$set' : {'floor' : req.body.floor}} // changing the floor location of this communal space
+	
+	Room.findOneAndUpdate(CommonRoom, newLoc, (err, orig) = > {
+		if (err) {
+			res.type('html').status(200);
+		    	console.log(err);
+		    	res.end();
+		}
+		else if (!orig) {
+			res.type('html').status(200);
+		    	console.log("original floor location not found "+ err);
+		    	res.end();
+		}
+		else {
+			res.send('successfully update the floor location of common room ' + CommonRoom.name);
+		}	
+	});
 });
 /*************************************************/
 
