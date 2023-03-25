@@ -107,9 +107,9 @@ app.use('/delete', (req, res) => {
 });
 
 //endpoint for editing the average capacity of a communal space
-app.use('/update', (req, res) => {
+app.use('/updateCap', (req, res) => {
 	var CommonRoom = {'CommonRoom' : req.query.CommonRoom}; // common room we are updating
-	var newCap = {'$set' : {'capacity' : req.body.capacity}} // changing the capacity of this common room
+	var newCap = req.body.capacity; // changing the capacity of this common room
 	
 	Room.findOneAndUpdate(CommonRoom, newCap, (err, orig) => {
 		if (err) {
@@ -123,17 +123,18 @@ app.use('/update', (req, res) => {
 		    	res.end();
 		}
 		else {
-			res.send('successfully update the capacity of common room ' + CommonRoom.name);
+			res.send('successfully update the capacity of common room ' + CommonRoom.roomName);
+			res.redirect('/allRooms');
 		}	    
 	});	
 });
 
 // endpoint for editing the communal space name 
-app.use('/update', (req, res) => {
+app.use('/updateTimeslots', (req, res) => {
 	var CommonRoom = {'CommonRoom' : req.query.CommonRoom}; // common room we are updating
-	var newName = {'$set' : {'name' : req.body.name}} // changing the name of this communal space
+	var newTime = {'$set' : {'timeSlots' : req.body.time}} // changing the name of this communal space
 	
-	Room.findOneAndUpdate(CommonRoom, newName, (err, orig) => {
+	Room.findOneAndUpdate(CommonRoom, newTime, (err, orig) => {
 		if (err) {
 			res.type('html').status(200);
 		    	console.log(err);
@@ -141,17 +142,17 @@ app.use('/update', (req, res) => {
 		}
 		else if (!orig) {
 			res.type('html').status(200);
-		    	console.log("original common room name not found "+ err);
+		    	console.log("original time not found "+ err);
 		    	res.end();
 		}
 		else {
-			res.send('successfully update the name of common room ' + CommonRoom.name);
+			res.send('successfully update the time slot ' + CommonRoom.name);
 		}	
 	});
 });
 
 // endpoint for editing the location marks on the map (floor)
-app.use('/update', (req, res) => {
+app.use('/updateFloor', (req, res) => {
 	var CommonRoom = {'CommonRoom' : req.query.CommonRoom}; // common room we are updating
 	var newLoc = {'$set' : {'floor' : req.body.floor}} // changing the floor location of this communal space
 	
