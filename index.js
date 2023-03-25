@@ -103,7 +103,7 @@ app.use('/delete', (req, res) => {
 		}
 	});
 	res.send('successfully deleted' + CommonRoom.name + ' from the database');
-	res.redirect('/all');
+	res.redirect('/allRooms');
 });
 
 //endpoint for editing the average capacity of a communal space
