@@ -176,7 +176,7 @@ app.use('/updateFloor', (req, res) => {
 //endpoint for editing the availability of a communal space
 app.use('/updateAvail', (req, res) => {
 	var CommonRoom = {'CommonRoom' : req.query.CommonRoom}; // common room we are updating
-	var newAvail = req.body.availability; // changing the capacity of this common room
+	var newAvail = req.body.availability; // changing the availability of this common room
 	
 	Room.findOneAndUpdate(CommonRoom, newAvail, (err, orig) => {
 		if (err) {
@@ -191,6 +191,30 @@ app.use('/updateAvail', (req, res) => {
 		}
 		else {
 			res.send('successfully updated the availability of common room ' + CommonRoom.roomName);
+			res.redirect('/allRooms');
+		}	    
+	});	
+});
+
+//endpoint for editing the number of consecutive reservations of a communal space
+app.use('/updateNumReserve', (req, res) => {
+	var CommonRoom = {'CommonRoom' : req.query.CommonRoom}; // common room we are updating
+	// changing the number of consecutive reservations of this common room
+	var newNumReserve = req.body.numReserve;
+	
+	Room.findOneAndUpdate(CommonRoom, newNumReserve, (err, orig) => {
+		if (err) {
+			res.type('html').status(200);
+		    	console.log(err);
+		    	res.end();
+		}
+		else if (!orig) {
+			res.type('html').status(200);
+		    	console.log("original number of reservations not found "+ err);
+		    	res.end();
+		}
+		else {
+			res.send('successfully updated the number of reservations of common room ' + CommonRoom.roomName);
 			res.redirect('/allRooms');
 		}	    
 	});	
