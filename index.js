@@ -127,7 +127,7 @@ app.use('/allRooms', (req, res) => {
 				// show all the common rooms
 				cR.forEach( (commonroom) => {
 					res.write('<li>');
-					res.write('Name: ' + commonroom.roomName + '; capacity: ' + commonroom.capacity + '; dorm name: ' + commonroom.dorm + '; floor number: ' + commonroom.floor + '; time slots: ' + commonroom.timeSlots  );
+					res.write('Name: ' + commonroom.roomName + '; capacity: ' + commonroom.capacity + '; dorm name: ' + commonroom.dorm + '; floor number: ' + commonroom.floor + '; time slots: ' + commonroom.timeSlots + '; available : ' + commonroom.availabilitiy );
 					// this creates a link to the /delete endpoint
 					res.write(" <a href=\"/delete?name=" + commonroom.roomName + "\">[Delete]</a>");
 					res.write('</li>');
@@ -147,6 +147,7 @@ app.use('/create', (req, res) =>{
 			dorm: req.body.dorm,
 			floor: req.body.floor,
 			timeSlots: req.body.time
+			availability: req.body.availability
 		    });
 
 		// save the Common Room to the database
