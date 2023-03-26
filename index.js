@@ -146,7 +146,7 @@ app.use('/create', (req, res) =>{
 			capacity: req.body.capacity,
 			dorm: req.body.dorm,
 			floor: req.body.floor,
-			timeSlots: req.body.time,
+			timeSlots: req.body.timeSlots,
 			availability: req.body.availability
 		    });
 
