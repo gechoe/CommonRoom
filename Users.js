@@ -13,7 +13,8 @@ var userSchema = new Schema({
    classYear: { type: Number, required: true },
    collegeEmail: { type: String, required: true, unique: true },
    password: { type: String, required: true },
-   role: { type: String, required: false }
+   role: { type: String, required: false },
+   numReserve: { type: Number, required: true, unique: false }
 });
 
 // export userSchema as a class called Users
