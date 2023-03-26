@@ -36,7 +36,7 @@ app.use('/addUser', (req, res) =>{
 			classYear: req.body.classYear,
 			collegeEmail: req.body.collegeEmail,
 			password: req.body.password,
-			role: req.body.role
+			role: req.body.role,
 			numReserve: req.body.numReserve
 		    });
 
@@ -146,7 +146,7 @@ app.use('/create', (req, res) =>{
 			capacity: req.body.capacity,
 			dorm: req.body.dorm,
 			floor: req.body.floor,
-			timeSlots: req.body.time
+			timeSlots: req.body.time,
 			availability: req.body.availability
 		    });
 
