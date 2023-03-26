@@ -37,6 +37,7 @@ app.use('/addUser', (req, res) =>{
 			collegeEmail: req.body.collegeEmail,
 			password: req.body.password,
 			role: req.body.role
+			numReserve: req.body.numReserve
 		    });
 
 		// save the user to the database
@@ -76,7 +77,7 @@ app.use('/allUsers', (req, res) => {
 			// show all the users
 			u.forEach( (user) => {
 			    res.write('<li>');
-			    res.write('Name: ' + user.firstName + " "+ user.lastName + '; user ID: ' + user.id + '; graduation year: ' + user.classYear + '; email: ' + user.collegeEmail + '; user role: ' + user.role  );
+			    res.write('Name: ' + user.firstName + " "+ user.lastName + '; user ID: ' + user.id + '; graduation year: ' + user.classYear + '; email: ' + user.collegeEmail + '; user role: ' + user.role + '; reservations: ' + user.numReserve );
 			    // this creates a link to the /delete endpoint
 			    res.write(" <a href=\"/deleteUser?user=" + user.userID + "\">[Delete]</a>");
 			    res.write('</li>');
@@ -99,7 +100,7 @@ app.use('/deleteUser', (req, res) => {
 			 console.log("not a user" + err);
 		 }
 	 });
-	 res.send('successfully deleted ' + userID + ' from the database');
+	 res.send('successfully deleted user from the database');
 	 res.redirect('/allUsers');
 });
 
