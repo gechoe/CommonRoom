@@ -220,6 +220,42 @@ app.use('/updateNumReserve', (req, res) => {
 	});	
 });
 
+// test:
+app.use('/update', (req, res) => {
+	var CommonRoom = {'CommonRoom' : req.query.CommonRoom}; // common room we are updating
+	let commonroom = {};
+		Room.findOne(CommonRoom, (err, result) => {
+			if (err) {
+				commonroom = {};
+			}  
+			if (result == null) {
+				commonroom = result;
+			}
+		});
+		Room.findOneAndUpdate(CommonRoom, { $set: {
+			roomName: req.body.name ? req.body.name : commonroom.name,
+			capacity: req.body.capacity ? req.body.capacity : commonroom.capacity,
+			floor: req.body.floor ? req.body.floor : commonroom.floor,
+			timeSlots: req.body.time ? req.body.time : commonroom.time }},
+			(err, result) => {
+				if (err) {
+					res.type('html').status(200);
+					console.log(err);
+					res.end();
+				} 
+				if (result == null) {
+					res.type('html').status(200);
+					console.log("original capacity not found "+ err);
+					res.end();
+				} else {
+					res.json({CommonRoom : result});
+					res.send('successfully update the capacity of common room ' + CommonRoom.name);
+				}
+			}
+		);
+	}
+);
+
 /*************************************************/
 
 app.use('/public', express.static('public'));
