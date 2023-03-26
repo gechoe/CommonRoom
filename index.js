@@ -107,7 +107,7 @@ app.use('/deleteUser', (req, res) => {
 
 // endpoint for showing all the common rooms in the database
 app.use('/allRooms', (req, res) => {
-	commonRooms.find( {}, (err, cR) => {
+	Room.find( {}, (err, cR) => {
 		if (err) {
 		    res.type('html').status(200);
 		    console.log('uh oh' + err);
@@ -141,7 +141,7 @@ app.use('/allRooms', (req, res) => {
 
 //endpoint for creating a new common room from "Common Room" request form
 app.use('/create', (req, res) =>{
-	var newCommonRoom = new commonRooms ({
+	var newCommonRoom = new Room ({
 			roomName: req.body.name,
 			capacity: req.body.capacity,
 			dorm: req.body.dorm,
