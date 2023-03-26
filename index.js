@@ -87,7 +87,7 @@ app.use('/allUsers', (req, res) => {
 			res.end();
 		    }
 		}
-	    }).sort({ 'userID' : 'asc' });
+	    }).sort({ 'user.id' : 'asc' });
 });
 
 //endpoint for deleting a user
