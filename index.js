@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // import the User class from User.js
-var User = require('./Users.js');
+var Users = require('./Users.js');
 var Room = require('./commonRooms.js');
 const e = require('express');
 
