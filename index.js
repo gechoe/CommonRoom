@@ -176,7 +176,7 @@ app.use('/delete', (req, res) => {
 			console.log("not a common room" + err);
 		}
 	});
-	res.send('successfully deleted ' + CommonRoom.roomName + ' from the database');
+	res.send('successfully deleted common room from the database');
 	res.redirect('/allRooms');
 });
 
