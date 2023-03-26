@@ -42,29 +42,28 @@ app.use('/allRooms', (req, res) => {
 		}
 		else {
 		    if (cR.length == 0) {
-			res.type('html').status(200);
-			res.write('There are no common rooms');
-			res.end();
-			return;
+				res.type('html').status(200);
+				res.write('There are no common rooms');
+				res.end();
+				return;
 		    }
 		    else {
-			res.type('html').status(200);
-			res.write('Here are the common rooms in the database:');
-			res.write('<ul>');
-			// show all the common rooms
-			cR.forEach( (commonroom) => {
-			    res.write('<li>');
-			    res.write('Name: ' + commonroom.roomName + '; capacity: ' + commonroom.capacity + '; dorm name: ' + commonroom.dorm + '; floor number: ' + commonroom.floor + '; time slots: ' + commonroom.timeSlots  );
-			    // this creates a link to the /delete endpoint
-			    res.write(" <a href=\"/delete?name=" + commonroom.roomName + "\">[Delete]</a>");
-			    res.write('</li>');
-					 
-			});
-			res.write('</ul>');
-			res.end();
+				res.type('html').status(200);
+				res.write('Here are the common rooms in the database:');
+				res.write('<ul>');
+				// show all the common rooms
+				cR.forEach( (commonroom) => {
+					res.write('<li>');
+					res.write('Name: ' + commonroom.roomName + '; capacity: ' + commonroom.capacity + '; dorm name: ' + commonroom.dorm + '; floor number: ' + commonroom.floor + '; time slots: ' + commonroom.timeSlots  );
+					// this creates a link to the /delete endpoint
+					res.write(" <a href=\"/delete?name=" + commonroom.roomName + "\">[Delete]</a>");
+					res.write('</li>');
+				});
+				res.write('</ul>');
+				res.end();
 		    }
 		}
-	    }).sort({ 'dorm': 'asc' });
+	}).sort({ 'dorm': 'asc' });
 });
 
 //endpoint for creating a new common room from "Common Room" request form
@@ -98,11 +97,12 @@ app.use('/delete', (req, res) => {
 	Room.findOneAndDelete(CommonRoom, (err, room) => {
 		if (err) {
 			console.log("error" + err);
-		} else if (!room) {
+		}
+		else if (!room) {
 			console.log("not a common room" + err);
 		}
 	});
-	res.send('successfully deleted' + CommonRoom.roomName + ' from the database');
+	res.send('successfully deleted ' + CommonRoom.roomName + ' from the database');
 	res.redirect('/allRooms');
 });
 
@@ -123,7 +123,7 @@ app.use('/updateCap', (req, res) => {
 		    	res.end();
 		}
 		else {
-			res.send('successfully update the capacity of common room ' + CommonRoom.roomName);
+			res.send('successfully updated the capacity of common room ' + CommonRoom.roomName);
 			res.redirect('/allRooms');
 		}	    
 	});	
@@ -146,7 +146,7 @@ app.use('/updateTimeslots', (req, res) => {
 		    	res.end();
 		}
 		else {
-			res.send('successfully update the time slot ' + CommonRoom.name);
+			res.send('successfully updated the time slot ' + CommonRoom.name);
 		}	
 	});
 });
@@ -168,10 +168,34 @@ app.use('/updateFloor', (req, res) => {
 		    	res.end();
 		}
 		else {
-			res.send('successfully update the floor location of common room ' + CommonRoom.name);
+			res.send('successfully updated the floor location of common room ' + CommonRoom.name);
 		}	
 	});
 });
+
+//endpoint for editing the availability of a communal space
+app.use('/updateAvail', (req, res) => {
+	var CommonRoom = {'CommonRoom' : req.query.CommonRoom}; // common room we are updating
+	var newAvail = req.body.availability; // changing the capacity of this common room
+	
+	Room.findOneAndUpdate(CommonRoom, newAvail, (err, orig) => {
+		if (err) {
+			res.type('html').status(200);
+		    	console.log(err);
+		    	res.end();
+		}
+		else if (!orig) {
+			res.type('html').status(200);
+		    	console.log("original availability not found "+ err);
+		    	res.end();
+		}
+		else {
+			res.send('successfully updated the availability of common room ' + CommonRoom.roomName);
+			res.redirect('/allRooms');
+		}	    
+	});	
+});
+
 /*************************************************/
 
 app.use('/public', express.static('public'));

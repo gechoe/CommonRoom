@@ -12,6 +12,7 @@ var roomSchema = new Schema({
    dorm: { type: String, required: true, unique: false },
    floor: { type: Number, required: true, unique: false },
    timeSlots: { type: String, required: true, unique: false },
+   availability: { type: Boolean, required: true, unique: false }
 });
 
 // export commonRoomSchema as a class called CommonRoom
