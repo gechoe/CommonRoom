@@ -27,10 +27,82 @@ app.use('/login', (req, res) => {
 
 });
 
-// endpoint for showing all the users enrolled in the database
-app.use('/all', (req, res) => {
-	//TO DO when Aminas headache clears up
+//endpoint for creating a new user from "Add User" request form
+app.use('/addUser', (req, res) =>{
+	var newUser = new Users ({
+			firstName: req.body.firstName,
+			lastName: req.body.lastName,
+			id: req.body.id,
+			classYear: req.body.classYear,
+			collegeEmail: req.body.collegeEmail,
+			password: req.body.password,
+			role: req.body.role
+		    });
+
+		// save the user to the database
+		newUser.save( (err) => { 
+		if (err) {
+		    	res.type('html').status(200);
+		    	res.write('uh oh: ' + err);
+		    	console.log(err);
+		    	res.end();
+		}
+		else {
+			 // display the "successfull created" message
+			res.send('successfully added ' + newUser.id + ' to the database');
+		}
+	});
 });
+
+// endpoint for showing all the users enrolled in the database
+app.use('/allUsers', (req, res) => {
+	Users.find( {}, (err, u) => {
+		if (err) {
+		    res.type('html').status(200);
+		    console.log('uh oh' + err);
+		    res.write(err);
+		}
+		else {
+		    if (u.length == 0) {
+			res.type('html').status(200);
+			res.write('There are no users in the database.');
+			res.end();
+			return;
+		    }
+		    else {
+			res.type('html').status(200);
+			res.write('Here are the users in the database:');
+			res.write('<ul>');
+			// show all the users
+			u.forEach( (user) => {
+			    res.write('<li>');
+			    res.write('Name: ' + user.firstName + " "+ user.lastName + '; user ID: ' + user.id + '; graduation year: ' + user.classYear + '; email: ' + user.collegeEmail + '; user role: ' + user.role  );
+			    // this creates a link to the /delete endpoint
+			    res.write(" <a href=\"/deleteUser?user=" + user.userID + "\">[Delete]</a>");
+			    res.write('</li>');
+					 
+			});
+			res.write('</ul>');
+			res.end();
+		    }
+		}
+	    }).sort({ 'userID' : 'asc' });
+});
+
+//endpoint for deleting a user
+app.use('/deleteUser', (req, res) => {
+		var User = {'Users' : req.query.Users};
+	Users.findOneAndDelete(User, (err, u) => {
+		 if (err) {
+			 console.log("error" + err);
+		 } else if (!u) {
+			 console.log("not a user" + err);
+		 }
+	 });
+	 res.send('successfully deleted ' + userID + ' from the database');
+	 res.redirect('/allUsers');
+});
+
 
 // endpoint for showing all the common rooms in the database
 app.use('/allRooms', (req, res) => {
@@ -106,73 +178,6 @@ app.use('/delete', (req, res) => {
 	res.redirect('/allRooms');
 });
 
-//endpoint for editing the average capacity of a communal space
-app.use('/updateCap', (req, res) => {
-	var CommonRoom = {'CommonRoom' : req.query.CommonRoom}; // common room we are updating
-	var newCap = req.body.capacity; // changing the capacity of this common room
-	
-	Room.findOneAndUpdate(CommonRoom, newCap, (err, orig) => {
-		if (err) {
-			res.type('html').status(200);
-		    	console.log(err);
-		    	res.end();
-		}
-		else if (!orig) {
-			res.type('html').status(200);
-		    	console.log("original capacity not found "+ err);
-		    	res.end();
-		}
-		else {
-			res.send('successfully updated the capacity of common room ' + CommonRoom.roomName);
-			res.redirect('/allRooms');
-		}	    
-	});	
-});
-
-// endpoint for editing the communal space name 
-app.use('/updateTimeslots', (req, res) => {
-	var CommonRoom = {'CommonRoom' : req.query.CommonRoom}; // common room we are updating
-	var newTime = {'$set' : {'timeSlots' : req.body.time}} // changing the name of this communal space
-	
-	Room.findOneAndUpdate(CommonRoom, newTime, (err, orig) => {
-		if (err) {
-			res.type('html').status(200);
-		    	console.log(err);
-		    	res.end();
-		}
-		else if (!orig) {
-			res.type('html').status(200);
-		    	console.log("original time not found "+ err);
-		    	res.end();
-		}
-		else {
-			res.send('successfully updated the time slot ' + CommonRoom.name);
-		}	
-	});
-});
-
-// endpoint for editing the location marks on the map (floor)
-app.use('/updateFloor', (req, res) => {
-	var CommonRoom = {'CommonRoom' : req.query.CommonRoom}; // common room we are updating
-	var newLoc = {'$set' : {'floor' : req.body.floor}} // changing the floor location of this communal space
-	
-	Room.findOneAndUpdate(CommonRoom, newLoc, (err, orig) => {
-		if (err) {
-			res.type('html').status(200);
-		    	console.log(err);
-		    	res.end();
-		}
-		else if (!orig) {
-			res.type('html').status(200);
-		    	console.log("original floor location not found "+ err);
-		    	res.end();
-		}
-		else {
-			res.send('successfully updated the floor location of common room ' + CommonRoom.name);
-		}	
-	});
-});
-
 //endpoint for editing the availability of a communal space
 app.use('/updateAvail', (req, res) => {
 	var CommonRoom = {'CommonRoom' : req.query.CommonRoom}; // common room we are updating
@@ -220,7 +225,7 @@ app.use('/updateNumReserve', (req, res) => {
 	});	
 });
 
-// test:
+// editing the name, capacity, floor and timeslots of a communal space
 app.use('/update', (req, res) => {
 	var CommonRoom = {'CommonRoom' : req.query.CommonRoom}; // common room we are updating
 	let commonroom = {};
@@ -249,7 +254,8 @@ app.use('/update', (req, res) => {
 					
 				} else {
 					res.send('successfully update the capacity of common room ' + CommonRoom.name);
-					res.redirect('http://localhost:3000/allRooms')
+					res.redirect('/public/homepage.html');
+					return;
 				}
 			}
 		);
@@ -260,7 +266,7 @@ app.use('/update', (req, res) => {
 
 app.use('/public', express.static('public'));
 
-app.use('/', (req, res) => { res.redirect('/public/homepage.html'); });
+app.use('/', (req, res) => { res.redirect('/public/home.html'); });
 
 app.listen(3000, () => {
 	console.log('Listening on port 3000');
