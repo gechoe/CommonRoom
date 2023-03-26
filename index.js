@@ -248,8 +248,8 @@ app.use('/update', (req, res) => {
 					console.log("original capacity not found "+ err);
 					res.end();
 				} else {
-					res.json({CommonRoom : result});
 					res.send('successfully update the capacity of common room ' + CommonRoom.name);
+					res.redirect('/allRooms');
 				}
 			}
 		);
