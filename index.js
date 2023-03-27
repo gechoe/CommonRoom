@@ -212,7 +212,7 @@ app.use('/update', (req, res) => {
 					console.log("original capacity not found "+ err);
 					
 				} else {
-					res.send('successfully update the capacity of common room ' + CommonRoom.name);
+					res.send('successfully update the capacity of common room ');
 					res.redirect('/public/home.html');
 					return;
 				}
