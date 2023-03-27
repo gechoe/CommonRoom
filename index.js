@@ -130,6 +130,7 @@ app.use('/allRooms', (req, res) => {
 					res.write('Name: ' + commonroom.roomName + '; capacity: ' + commonroom.capacity + '; dorm name: ' + commonroom.dorm + '; floor number: ' + commonroom.floor + '; time slots: ' + commonroom.timeSlots + '; available : ' + commonroom.availability );
 					// this creates a link to the /delete endpoint
 					res.write(" <a href=\"/delete?name=" + commonroom.roomName + "\">[Delete]</a>");
+					res.write(" <a href=\"/public/editCommonRoom.html\">[Edit]</a>");
 					res.write('</li>');
 				});
 				res.write('</ul>');
