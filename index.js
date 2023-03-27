@@ -208,10 +208,10 @@ app.use('/update', (req, res) => {
 				} 
 				if (result == null) {
 					res.type('html').status(200);
-					console.log("original capacity not found "+ err);
+					console.log("original information found "+ err);
 					
 				} else {
-					res.send('successfully update the capacity of common room ');
+					res.send('successfully updated the common room information');
 					res.redirect('/public/home.html');
 					return;
 				}
