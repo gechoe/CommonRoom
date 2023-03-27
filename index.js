@@ -127,7 +127,7 @@ app.use('/allRooms', (req, res) => {
 				// show all the common rooms
 				cR.forEach( (commonroom) => {
 					res.write('<li>');
-					res.write('Name: ' + commonroom.roomName + '; capacity: ' + commonroom.capacity + '; dorm name: ' + commonroom.dorm + '; floor number: ' + commonroom.floor + '; time slots: ' + commonroom.timeSlots + '; available : ' + commonroom.availability );
+					res.write('Name: ' + commonroom.roomName + '; capacity: ' + commonroom.capacity + '; dorm name: ' + commonroom.dorm + '; floor number: ' + commonroom.floor + '; time slots: ' + commonroom.timeSlots + '; available : ' + commonroom.availability + '; reservations limit : ' + commonroom.numReserve);
 					// this creates a link to the /delete endpoint
 					res.write(" <a href=\"/delete?name=" + commonroom.roomName + "\">[Delete]</a>");
 					res.write(" <a href=\"/public/editCommonRoom.html\">[Edit]</a>");
@@ -148,7 +148,8 @@ app.use('/create', (req, res) =>{
 			dorm: req.body.dorm,
 			floor: req.body.floor,
 			timeSlots: req.body.timeSlots,
-			availability: req.body.availability
+			availability: req.body.availability,
+			numReserve: req.body.numReserve
 		    });
 
 		// save the Common Room to the database
@@ -244,7 +245,9 @@ app.use('/update', (req, res) => {
 			roomName: req.body.name ? req.body.name : commonroom.name,
 			capacity: req.body.capacity ? req.body.capacity : commonroom.capacity,
 			floor: req.body.floor ? req.body.floor : commonroom.floor,
-			timeSlots: req.body.time ? req.body.time : commonroom.time }},
+			timeSlots: req.body.time ? req.body.time : commonroom.time,
+			availability: req.body.availability ? req.body.availability : commonroom.availability,
+			numReserve: req.body.numReserve ? req.body.numReserve : commonroom.numReserve }},
 			(err, result) => {
 				if (err) {
 					res.type('html').status(200);

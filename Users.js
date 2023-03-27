@@ -6,7 +6,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/myDatabase');
 
 var Schema = mongoose.Schema;
 
-var reeserveSchema = new Schema({
+var reserveSchema = new Schema({
    roomName: { type: String, required: true, unique: true },
    dorm: { type: String, required: true, unique: false },
    floor: { type: Number, required: true, unique: false },
@@ -24,7 +24,7 @@ var userSchema = new Schema({
    allReserve: [{ type: Schema.Types.ObjectId, ref: 'Reservations' }]
 });
 
-var Reservations  = mongoose.model('Reservations', reservationsSchema);
+var Reservations  = mongoose.model('Reservations', reserveSchema);
 
 // export userSchema as a class called Users
 module.exports = mongoose.model('Users', userSchema);
