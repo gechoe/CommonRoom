@@ -256,7 +256,7 @@ app.use('/update', (req, res) => {
 					
 				} else {
 					res.send('successfully update the capacity of common room ' + CommonRoom.name);
-					res.redirect('/public/homepage.html');
+					res.redirect('/public/home.html');
 					return;
 				}
 			}
