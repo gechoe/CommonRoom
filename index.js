@@ -36,8 +36,7 @@ app.use('/addUser', (req, res) =>{
 			classYear: req.body.classYear,
 			collegeEmail: req.body.collegeEmail,
 			password: req.body.password,
-			role: req.body.role,
-			numReserve: req.body.numReserve
+			role: req.body.role
 		    });
 
 		// save the user to the database
@@ -127,7 +126,7 @@ app.use('/allRooms', (req, res) => {
 				// show all the common rooms
 				cR.forEach( (commonroom) => {
 					res.write('<li>');
-					res.write('Name: ' + commonroom.roomName + '; capacity: ' + commonroom.capacity + '; dorm name: ' + commonroom.dorm + '; floor number: ' + commonroom.floor + '; time slots: ' + commonroom.timeSlots + '; available : ' + commonroom.availability + '; reservations limit : ' + commonroom.numReserve);
+					res.write('Name: ' + commonroom.roomName + '; capacity: ' + commonroom.capacity + '; dorm name: ' + commonroom.dorm + '; floor number: ' + commonroom.floor + '; time slots: ' + commonroom.timeSlots + '; availability : ' + commonroom.avail + '; reservations limit : ' + commonroom.numReserve);
 					// this creates a link to the /delete endpoint
 					res.write(" <a href=\"/delete?name=" + commonroom.roomName + "\">[Delete]</a>");
 					res.write(" <a href=\"/public/editCommonRoom.html\">[Edit]</a>");
@@ -148,7 +147,7 @@ app.use('/create', (req, res) =>{
 			dorm: req.body.dorm,
 			floor: req.body.floor,
 			timeSlots: req.body.timeSlots,
-			availability: req.body.availability,
+			avail: req.body.avail,
 			numReserve: req.body.numReserve
 		    });
 
@@ -198,8 +197,8 @@ app.use('/update', (req, res) => {
 			roomName: req.body.name ? req.body.name : commonroom.name,
 			capacity: req.body.capacity ? req.body.capacity : commonroom.capacity,
 			floor: req.body.floor ? req.body.floor : commonroom.floor,
-			timeSlots: req.body.time ? req.body.time : commonroom.time,
-			availability: req.body.availability ? req.body.availability : commonroom.availability,
+			timeSlots: req.body.timeSlots ? req.body.timeSlots : commonroom.timeSlots,
+			avail: req.body.avail ? req.body.avail : commonroom.avail,
 			numReserve: req.body.numReserve ? req.body.numReserve : commonroom.numReserve }},
 			(err, result) => {
 				if (err) {
