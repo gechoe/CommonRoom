@@ -1,1 +1,1 @@
-Hello! This is the README for the group project, woohoo!
+Hello! This is the README for the web application!
