@@ -90,6 +90,27 @@ app.use('/allUsers', (req, res) => {
 	    }).sort({ 'user.id' : 'asc' });
 });
 
+app.use('/users', (req, res) => {
+	Users.find({}, (err, u) => {
+		console.log(users);
+		if (err) {
+			console.log(err);
+			res.json({});
+		}
+		else if (users.length == 0) {
+			res.json({});
+		}
+		else {
+			var returnArray = [];
+			users.forEach( (users) => {
+				returnArray.push( {"collegeEmail" : users.collegeEmail, "password" : users.password} );
+			});
+			res.json(returnArray);
+		}
+	});
+});
+		
+
 //endpoint for deleting a user
 app.use('/deleteUser', (req, res) => {
 		var User = {'Users' : req.query.Users};
