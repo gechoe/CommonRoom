@@ -49,7 +49,8 @@ app.use('/addUser', (req, res) =>{
 		}
 		else {
 			 // display the "successfull created" message
-			res.send('successfully added ' + newUser.id + ' to the database');
+			//res.send('successfully added ' + newUser.id + ' to the database');
+			res.redirect('/allUsers')
 		}
 	});
 });
@@ -99,7 +100,7 @@ app.use('/deleteUser', (req, res) => {
 			 console.log("not a user" + err);
 		 }
 	 });
-	 res.send('successfully deleted user from the database');
+	 //res.send('successfully deleted user from the database');
 	 res.redirect('/allUsers');
 });
 
@@ -139,6 +140,33 @@ app.use('/allRooms', (req, res) => {
 	}).sort({ 'dorm': 'asc' });
 });
 
+
+//Endpoint to send back specified dorm common rooms for app
+app.use('/rooms', (req, res) => {
+
+	
+	Room.find( {}, (err, rooms) => {
+		console.log(rooms);
+		if (err) {
+		    console.log('uh oh' + err);
+		    res.json({});
+		}
+		else if (rooms.length == 0) {
+		    // no objects found, so send back empty json
+		    res.json({});
+		}
+		else {
+		    // construct an array out of the result
+		    var returnArray = [];
+		    rooms.forEach( (room) => {
+			    returnArray.push( { "name" : room.roomName , "capacity" : room.capacity, "dorm" : room.dorm,
+				"floor" : room.floor, "timeSlots" : room.timeSlots, "avail" : room.avail, " numReserve" : room.numReserve } );
+			});
+		    // send it back as JSON Array
+		    res.json(returnArray); 
+		}
+    });
+});
 //endpoint for creating a new common room from "Common Room" request form
 app.use('/create', (req, res) =>{
 	var newCommonRoom = new Room ({
@@ -157,11 +185,12 @@ app.use('/create', (req, res) =>{
 		    	res.type('html').status(200);
 		    	res.write('uh oh: ' + err);
 		    	console.log(err);
-		    	res.end();
+		    	res.redirect('/allRooms')
 		}
 		else {
 			 // display the "successfull created" message
-			res.send('successfully added ' + newCommonRoom.roomName + ' to the database');
+			//res.send('successfully added ' + newCommonRoom.roomName + ' to the database');
+			res.redirect('/allRooms')
 		}
 	});
 });
@@ -177,7 +206,7 @@ app.use('/delete', (req, res) => {
 			console.log("not a common room" + err);
 		}
 	});
-	res.send('successfully deleted common room from the database');
+	//res.send('successfully deleted common room from the database');
 	res.redirect('/allRooms');
 });
 
@@ -211,9 +240,9 @@ app.use('/update', (req, res) => {
 					console.log("original information found "+ err);
 					
 				} else {
-					res.send('successfully updated the common room information');
-					res.redirect('/public/home.html');
-					return;
+					//res.send('successfully updated the common room information');
+					res.redirect('/allRooms');
+					//return;
 				}
 			}
 		);
@@ -229,3 +258,4 @@ app.use('/', (req, res) => { res.redirect('/public/home.html'); });
 app.listen(3000, () => {
 	console.log('Listening on port 3000');
 });
+
