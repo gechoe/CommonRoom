@@ -231,6 +231,19 @@ app.use('/delete', (req, res) => {
 	res.redirect('/allRooms');
 });
 
+// outline for endpoint for deleting a reservation
+app.use('deleteRes', (req, res) => {
+	//var Reservation = {'Reservation' : req.query.Reservation};
+	Reservation.findOneAndDelete(Reservation, (err, res) => {  
+		if (err) {
+			console.log(err);
+		} else if (!res) {
+			console.log("no reservation made" + err);
+		}
+	});
+	res.redirect('/allRooms'); // no sure where to redirect atm
+});
+
 // editing the name, capacity, floor and timeslots of a communal space
 app.use('/update', (req, res) => {
 	var CommonRoom = {'CommonRoom' : req.query.CommonRoom}; // common room we are updating
