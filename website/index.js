@@ -232,7 +232,7 @@ app.use('/delete', (req, res) => {
 });
 
 // outline for endpoint for deleting a reservation
-app.use('deleteRes', (req, res) => {
+app.use('/deleteRes', (req, res) => {
 	//var Reservation = {'Reservation' : req.query.Reservation};
 	Reservation.findOneAndDelete(Reservation, (err, res) => {  
 		if (err) {
