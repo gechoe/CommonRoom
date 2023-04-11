@@ -10,7 +10,7 @@ var reserveSchema = new Schema({
    roomName: { type: String, required: true, unique: true },
    dorm: { type: String, required: true, unique: false },
    floor: { type: Number, required: true, unique: false },
-   time: { type: String, required: true, unique: false }
+   time: { type: Number, required: true, unique: false }
 });
 
 // export userSchema as a class called Users
