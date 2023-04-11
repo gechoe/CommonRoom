@@ -9,6 +9,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // import the User class from User.js
 var Users = require('./Users.js');
 var Room = require('./commonRooms.js');
+var Reservations = require('./Reservations.js')
 const e = require('express');
 
 /***************************************/
@@ -26,7 +27,96 @@ app.use('/signup', (req, res) => {
 app.use('/login', (req, res) => {
 
 });
+// endpoint for showing all the users enrolled in the database
+app.use('/allReservations', (req, res) => {
+	Reservations.find( {}, (err, r) => {
+		if (err) {
+		    res.type('html').status(200);
+		    console.log('uh oh' + err);
+		    res.write(err);
+		}
+		else {
+		    if (r.length == 0) {
+			res.type('html').status(200);
+			res.write('There are no reservations in the database.');
+			res.end();
+			return;
+		    }
+		    else {
+			res.type('html').status(200);
+			res.write('Here are the reservations in the database:');
+			res.write('<ul>');
+			// show all the users
+			r.forEach( (reserv) => {
+			    res.write('<li>');
+			    res.write('Room Name: ' +  reserv.roomName + '; Dorm: ' + reserv.dorm + '; Floor: ' + reserv.floor + '; Time: ' + reserv.time);
+			    // this creates a link to the /delete endpoint
+			    res.write(" <a href=\"/deleteRes?reserv=" + reserv.roomName + "\">[Delete]</a>");
+			    res.write('</li>');
+			});
+			res.write('</ul>');
+			res.end();
+		    }
+		}
+	    }).sort({ 'reserv.roomName' : 'asc' });
+});
+//endpoint for creating a new user from "Add Reservations" request form
+app.use('/addReservation', (req, res) =>{
+	var newReservation = new Reservations ({
+			roomName: req.body.roomName,
+			dorm: req.body.dorm,
+			floor: req.body.time,
+			time: req.body.time
+		    });
 
+		// save the user to the database
+		newReservation.save( (err) => { 
+		if (err) {
+		    	res.type('html').status(200);
+		    	res.write('uh oh: ' + err);
+		    	console.log(err);
+		    	res.end();
+		}
+		else {
+			 // display the "successfull created" message
+			//res.send('successfully added ' + newUser.id + ' to the database');
+			res.redirect('/allReservations')
+		}
+	});
+});
+
+app.use('/reservation', (req, res) => {
+	Reservations.find({}, (err, r) => {
+		// console.log(u);
+		if (err) {
+			console.log(err);
+			res.json({});
+		}
+		else if (r.length == 0) {
+			res.json({});
+		}
+		else {
+			var returnArray = [];
+			r.forEach( (rsv) => {
+				returnArray.push( {"roomName" : rsv.roomName, "dorm" : rsv.dorm, "floor" : rsv.floor, "time" : rsv.time} );
+			});
+			res.json(returnArray);
+		}
+	});
+});
+
+// endpoint for deleting a reservation
+app.use('/deleteRes', (req, res) => {
+	var Reservations = {'Reservations' : req.query.Reservations};
+	Reservations.findOneAndDelete(Reservations, (err, res) => {  
+		if (err) {
+			console.log(err);
+		} else if (!res) {
+			console.log("no reservation made" + err);
+		}
+	});
+	res.redirect('/allReservations'); 
+});
 //endpoint for creating a new user from "Add User" request form
 app.use('/addUser', (req, res) =>{
 	var newUser = new Users ({
@@ -229,19 +319,6 @@ app.use('/delete', (req, res) => {
 	});
 	//res.send('successfully deleted common room from the database');
 	res.redirect('/allRooms');
-});
-
-// outline for endpoint for deleting a reservation
-app.use('/deleteRes', (req, res) => {
-	//var Reservation = {'Reservation' : req.query.Reservation};
-	Reservation.findOneAndDelete(Reservation, (err, res) => {  
-		if (err) {
-			console.log(err);
-		} else if (!res) {
-			console.log("no reservation made" + err);
-		}
-	});
-	res.redirect('/allRooms'); // no sure where to redirect atm
 });
 
 // editing the name, capacity, floor and timeslots of a communal space
