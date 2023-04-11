@@ -7,7 +7,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/myDatabase');
 var Schema = mongoose.Schema;
 
 var reserveSchema = new Schema({
-   roomName: { type: String, required: true, unique: true },
+   roomName: { type: String, required: true, unique: false },
    dorm: { type: String, required: true, unique: false },
    floor: { type: Number, required: true, unique: false },
    time: { type: Number, required: true, unique: false }
