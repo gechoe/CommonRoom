@@ -238,8 +238,34 @@ app.use('/users', (req, res) => {
 			res.json(returnArray);
 		}
 	});
+	
+	
 });
-		
+	
+//endpoint for creating a new user from android app
+app.use('/addUserAccount', (req, res) =>{
+	var newUser = new Users ({
+			firstName: req.query.firstName,
+			lastName: req.query.lastName,
+			id: req.query.id,
+			classYear: req.query.classYear,
+			collegeEmail: req.query.collegeEmail,
+			password: req.query.password,
+			role: req.query.role
+		    });
+
+		// save the user to the database
+		newUser.save( (err) => { 
+		if (err) {
+		    	res.type('html').status(200);
+		    	res.write('uh oh: ' + err);
+		    	console.log(err);
+		    	res.end();
+		}
+		else {
+		}
+	});
+});
 
 //endpoint for deleting a user
 app.use('/deleteUser', (req, res) => {
