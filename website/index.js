@@ -51,7 +51,8 @@ app.use('/allReservations', (req, res) => {
 			    res.write('<li>');
 			    res.write('Room Name: ' +  reserv.roomName + '; Dorm: ' + reserv.dorm + '; Floor: ' + reserv.floor + '; Time: ' + reserv.time);
 			    // this creates a link to the /delete endpoint
-			    res.write(" <a href=\"/deleteRes?reserv=" + reserv.roomName + "\">[Delete]</a>");
+			    res.write(" <a href=\"/deleteRes?reserv=" + reserv.reservroomName + "\">[Delete]</a>");
+				res.write(" <a href=\"/public/editReservations.html\">[Edit]</a>");
 			    res.write('</li>');
 			});
 			res.write('</ul>');
@@ -117,6 +118,44 @@ app.use('/deleteRes', (req, res) => {
 	});
 	res.redirect('/allReservations'); 
 });
+
+// editing the reservation info
+app.use('/editRes', (req, res) => {
+	var Reservation = {'Reservations' : req.query.Reservations}; // common room we are updating
+	let reservation = {};
+		Reservations.findOne(Reservation, (err, result) => {
+			if (err) {
+				reservation = {};
+			}  
+			if (result == null) {
+				reservation = result;
+			}
+		});
+		Reservations.findOneAndUpdate(Reservation, { $set: {
+			roomName: req.body.roomName ? req.body.roomName : reservation.roomName,
+			dorm: req.body.dorm ? req.body.dorm : reservation.dorm,
+			floor: req.body.floor ? req.body.floor : reservation.floor,
+			time: req.body.time ? req.body.time : reservation.time }},
+			(err, result) => {
+				if (err) {
+					res.type('html').status(200);
+					console.log(err);
+					
+				} 
+				if (result == null) {
+					res.type('html').status(200);
+					console.log("original information found "+ err);
+					
+				} else {
+					//res.send('successfully updated the common room information');
+					res.redirect('/allReservations');
+					//return;
+				}
+			}
+		);
+	}
+);
+
 //endpoint for creating a new user from "Add User" request form
 app.use('/addUser', (req, res) =>{
 	var newUser = new Users ({
