@@ -77,7 +77,7 @@ app.use('/allUsers', (req, res) => {
 			// show all the users
 			u.forEach( (user) => {
 			    res.write('<li>');
-			    res.write('Name: ' + user.firstName + " "+ user.lastName + '; user ID: ' + user.id + '; graduation year: ' + user.classYear + '; email: ' + user.collegeEmail + '; user role: ' + user.role + '; reservations: ' + user.numReserve );
+			    res.write('Name: ' + user.firstName + " "+ user.lastName + '; user ID: ' + user.id + '; graduation year: ' + user.classYear + '; email: ' + user.collegeEmail + '; user role: ' + user.role + '; reservations: ' + user.numReserve + "; password " + user.password);
 			    // this creates a link to the /delete endpoint
 			    res.write(" <a href=\"/deleteUser?user=" + user.userID + "\">[Delete]</a>");
 			    res.write('</li>');
