@@ -170,7 +170,7 @@ app.use('/allReservations', (req, res) => {
 			// show all the users
 			r.forEach( (reserv) => {
 			    res.write('<li>');
-			    res.write('Room Name: ' +  reserv.roomName + '; Dorm: ' + reserv.dorm + '; Floor: ' + reserv.floor + '; Time: ' + reserv.time);
+			    res.write('Room Name: ' +  reserv.roomName + '; Dorm: ' + reserv.dorm + '; Floor: ' + reserv.floor + '; Date: ' + reserv.date + '; Time: ' + reserv.time);
 			    // this creates a link to the /delete endpoint
 			    res.write(" <a href=\"/deleteRes?reserv=" + reserv.reservroomName + "\">[Delete]</a>");
 				res.write(" <a href=\"/public/editReservations.html\">[Edit]</a>");
@@ -189,7 +189,7 @@ app.use('/addReservation', (req, res) =>{
 			roomName: req.body.roomName,
 			dorm: req.body.dorm,
 			floor: req.body.floor,
-			date: req,body.date,
+			date: req.body.date,
 			time: req.body.time
 		    });
 
@@ -222,7 +222,7 @@ app.use('/reservation', (req, res) => {
 		else {
 			var returnArray = [];
 			r.forEach( (rsv) => {
-				returnArray.push( {"roomName" : rsv.roomName, "dorm" : rsv.dorm, "floor" : rsv.floor, "time" : rsv.time} );
+				returnArray.push( {"roomName" : rsv.roomName, "dorm" : rsv.dorm, "floor" : rsv.floor, "date" : rsv.date, "time" : rsv.time} );
 			});
 			res.json(returnArray);
 		}
@@ -258,6 +258,7 @@ app.use('/editRes', (req, res) => {
 			roomName: req.body.roomName ? req.body.roomName : reservation.roomName,
 			dorm: req.body.dorm ? req.body.dorm : reservation.dorm,
 			floor: req.body.floor ? req.body.floor : reservation.floor,
+			date: req.body.date ? req.body.date : reservation.date,
 			time: req.body.time ? req.body.time : reservation.time }},
 			(err, result) => {
 				if (err) {
