@@ -277,11 +277,10 @@ app.use('/allRooms', (req, res) => {
 				// show all the common rooms
 				cR.forEach( (commonroom) => {
 					res.write('<li>');
-					res.write('Name: ' + commonroom.roomName + '; capacity: ' + commonroom.capacity + '; dorm name: ' + commonroom.dorm + '; floor number: ' + commonroom.floor + '; time slots: ' + commonroom.timeSlots + '; availability : ' + commonroom.avail + '; reservations limit : ' + commonroom.numReserve);
+					res.write('Name: ' + commonroom.roomName + '; capacity: ' + commonroom.capacity + '; dorm name: ' + commonroom.dorm + '; floor number: ' + commonroom.floor + '; time slots: ' + commonroom.timeSlots + '; dates : ' + commonroom.dateSlots + '; availability : ' + commonroom.avail + '; reservations limit : ' + commonroom.numReserve);
 					// this creates a link to the /delete endpoint
 					res.write(" <a href=\"/delete?name=" + commonroom.roomName + "\">[Delete]</a>");
 					res.write(" <a href=\"/public/editCommonRoom.html\">[Edit]</a>");
-					res.write(" <a href=\"/public/commonRoomForm.html\">[Back to Common Room Form]</a>");
 					res.write('</li>');
 				});
 				res.write('</ul>');
@@ -294,6 +293,8 @@ app.use('/allRooms', (req, res) => {
 
 //Endpoint to send back specified dorm common rooms for app
 app.use('/rooms', (req, res) => {
+
+	
 	Room.find( {}, (err, rooms) => {
 		console.log(rooms);
 		if (err) {
@@ -309,7 +310,7 @@ app.use('/rooms', (req, res) => {
 		    var returnArray = [];
 		    rooms.forEach( (room) => {
 			    returnArray.push( { "name" : room.roomName , "capacity" : room.capacity, "dorm" : room.dorm,
-				"floor" : room.floor, "timeSlots" : room.timeSlots, "avail" : room.avail, " numReserve" : room.numReserve } );
+				"floor" : room.floor, "timeSlots" : room.timeSlots,"dateSlots" : room.dateSlots, "avail" : room.avail, " numReserve" : room.numReserve } );
 			});
 		    // send it back as JSON Array
 		    res.json(returnArray); 
@@ -324,6 +325,7 @@ app.use('/create', (req, res) =>{
 			dorm: req.body.dorm,
 			floor: req.body.floor,
 			timeSlots: req.body.timeSlots,
+			dateSlots: req.body.dateSlots,
 			avail: req.body.avail,
 			numReserve: req.body.numReserve
 		    });
@@ -346,7 +348,7 @@ app.use('/create', (req, res) =>{
 
 //endpoint for deleting a common room
 app.use('/delete', (req, res) => {
-    var CommonRoom = {'CommonRoom' : req.query.CommonRoom};
+       var CommonRoom = {'CommonRoom' : req.query.CommonRoom};
 	Room.findOneAndDelete(CommonRoom, (err, room) => {
 		if (err) {
 			console.log("error" + err);
@@ -376,6 +378,7 @@ app.use('/update', (req, res) => {
 			capacity: req.body.capacity ? req.body.capacity : commonroom.capacity,
 			floor: req.body.floor ? req.body.floor : commonroom.floor,
 			timeSlots: req.body.timeSlots ? req.body.timeSlots : commonroom.timeSlots,
+			dateSlots: req.body.dateSlots ? req.body.dateSlots : commonroom.dateSlots,
 			avail: req.body.avail ? req.body.avail : commonroom.avail,
 			numReserve: req.body.numReserve ? req.body.numReserve : commonroom.numReserve }},
 			(err, result) => {
