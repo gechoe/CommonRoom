@@ -14,7 +14,7 @@ var userSchema = new Schema({
    collegeEmail: { type: String, required: true, unique: true },
    password: { type: String, required: true },
    role: { type: String, required: false },
-   allReserve: [{ type: Schema.Types.ObjectId, ref: 'Reservations' }]
+   allReserve: { type: Schema.Types.ObjectId, ref: 'Reservations' }
 });
 
 // export userSchema as a class called Users
