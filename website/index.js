@@ -188,7 +188,8 @@ app.use('/addReservation', (req, res) =>{
 	var newReservation = new Reservations ({
 			roomName: req.body.roomName,
 			dorm: req.body.dorm,
-			floor: req.body.time,
+			floor: req.body.floor,
+			date: req,body.date,
 			time: req.body.time
 		    });
 
