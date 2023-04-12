@@ -12,6 +12,7 @@ var roomSchema = new Schema({
    dorm: { type: String, required: true, unique: false },
    floor: { type: Number, required: true, unique: false },
    timeSlots: { type: String, required: true, unique: false },
+   dateSlots: { type: String, required: true, unique: false },
    avail: { type: String, required: true, unique: false },
    numReserve: { type: Number, required: true, unique: false }
 });
