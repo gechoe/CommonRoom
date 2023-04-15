@@ -51,6 +51,63 @@ app.use('/addUserAccount', (req, res) =>{
 	});
 });
 
+//endpoint for creating a new user from "Add Reservations" request form
+app.use('/addUserReservation', (req, res) =>{
+	var newReservation = new Reservations ({
+		roomName: req.query.roomName,
+		dorm: req.query.dorm,
+		floor: req.query.floor,
+		date: req.query.date,
+		time: req.query.time
+	});
+	
+	var user = {'Users' : req.query.Users};
+	//Find a way to get the users reservation array
+	//push the new reservation below onto that one
+	//set the old allReserve to the new array 
+	let u = {};
+		Users.findOne(user, (err, result) => {
+			if (err) {
+				u = {};
+			}
+			if (result == null) {
+				u = result;
+			}
+		});
+		Users.findOneAndUpdate(Users, { $set: {
+			allReserve : newReservation
+		}}, (err, result) => {
+			if (err) {
+				res.type('html').status(200);
+				console.log(err);
+			} 
+			
+			if (result == null) {
+				res.type('html').status(200);
+				console.log("original information found "+ err);
+			} else {
+				//res.send('successfully updated the common room information');
+				res.redirect('/allRooms');
+				//return;
+			}
+		});
+		
+		// save the reservation to the database
+		newReservation.save( (err) => { 
+			if (err) {
+				res.type('html').status(200);
+				res.write('uh oh: ' + err);
+				console.log(err);
+				res.end();
+			}
+			else {
+				// display the "successfull created" message
+				//res.send('successfully added ' + newUser.id + ' to the database');
+				res.redirect('/allReservations')
+			}
+		});
+	});
+
 //endpoint for creating a new user from "Add User" request form
 app.use('/addUser', (req, res) =>{
 	var newUser = new Users ({
@@ -114,6 +171,43 @@ app.use('/allUsers', (req, res) => {
 	    }).sort({ 'user.id' : 'asc' });
 });
 
+app.use('/editUser', (req, res) => {
+	var changedUser = { 'collegeEmail': req.query.collegeEmail };// User we are updating
+	let user = {};
+	Users.findOne(changedUser, (err, result) => {
+		if (err) {
+			user = {};
+		}
+		if (result == null) {
+			user = result;
+		}
+	});
+	Users.findOneAndUpdate(changedUser, {
+		$set: {
+			firstName: req.query.firstName ? req.query.firstName : changedUser.firstName,
+			lastName: req.query.lastName ? req.query.lastName : changedUser.lastName,
+			classYear: req.query.classYear ? req.query.classYear : changedUser.classYear,
+			password: req.query.password ? req.query.password : changedUser.password,
+		}
+	},
+		(err, result) => {
+			if (err) {
+				res.type('html').status(200);
+				console.log(err);
+
+			}
+			if (result == null) {
+				res.type('html').status(200);
+				console.log("original information found " + err);
+
+			} else {
+				//res.redirect('/allUsers');
+			}
+		}
+	);
+}
+);
+
 app.use('/users', (req, res) => {
 	Users.find({}, (err, u) => {
 		// console.log(u);
@@ -127,7 +221,7 @@ app.use('/users', (req, res) => {
 		else {
 			var returnArray = [];
 			u.forEach( (users) => {
-				returnArray.push( {"collegeEmail" : users.collegeEmail, "password" : users.password} );
+				returnArray.push({ "collegeEmail": users.collegeEmail, "password": users.password, "firstName": users.firstName, "lastName": users.lastName, "id": users.id, "classYear": users.classYear });
 			});
 			res.json(returnArray);
 		}
