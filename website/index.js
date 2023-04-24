@@ -315,6 +315,7 @@ app.use('/reservation', (req, res) => {
 // endpoint for deleting a reservation in app (separate from the delete res for the website)
 app.use('/deleteResApp', (req, res) => {
 	var userEmail = { 'userEmail': req.query.userEmail };
+	var time = { 'time' : req.query.time };
 	Reservations.findOneAndDelete(userEmail, (err, res) => {
 		if (err) {
 			console.log(err);
