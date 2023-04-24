@@ -60,7 +60,7 @@ app.use('/addUserReservation', (req, res) => {
 		floor: req.query.floor,
 		date: req.query.date,
 		time: req.query.time,
-		uniqueID: req.query.uniqueID;
+		uniqueID: req.query.uniqueID
 	});
 	
 	// save the reservation to the database
