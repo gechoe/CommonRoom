@@ -7,12 +7,12 @@ mongoose.connect('mongodb://127.0.0.1:27017/myDatabase');
 var Schema = mongoose.Schema;
 
 var reserveSchema = new Schema({
-   uniqueID : { type: String, required: true, unique: true },
    userEmail: { type: String, required: true, unique: false },
    roomName: { type: String, required: true, unique: false },
    dorm: { type: String, required: true, unique: false },
    floor: { type: Number, required: true, unique: false },
-   date: { type: String, required: true, unique: false }
+   date: { type: String, required: true, unique: false },
+   time: { type: String, required: true, unique: false }
 });
 
 // export userSchema as a class called Users
