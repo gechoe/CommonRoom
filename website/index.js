@@ -59,8 +59,7 @@ app.use('/addUserReservation', (req, res) => {
 		dorm: req.query.dorm,
 		floor: req.query.floor,
 		date: req.query.date,
-		time: req.query.time,
-		uniqueID: req.query.uniqueID
+		time: req.query.time
 	});
 	
 	// save the reservation to the database
@@ -274,8 +273,7 @@ app.use('/addReservation', (req, res) =>{
 			dorm: req.body.dorm,
 			floor: req.body.floor,
 			date: req.body.date,
-			time: req.body.time,
-			uniqueID : req.body.uniqueID
+			time: req.body.time
 		    });
 
 		// save the user to the database
@@ -316,7 +314,7 @@ app.use('/reservation', (req, res) => {
 
 // endpoint for deleting a reservation in app (separate from the delete res for the website)
 app.use('/deleteResApp', (req, res) => {
-	var uniqueID = { 'uniqueID': req.query.uniqueID };
+	var collegeEmail = { 'collegeEmail': req.query.collegeEmail };
 	Reservations.findOneAndDelete(uniqueID, (err, res) => {
 		if (err) {
 			console.log(err);
