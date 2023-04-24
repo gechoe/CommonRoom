@@ -59,7 +59,8 @@ app.use('/addUserReservation', (req, res) => {
 		dorm: req.query.dorm,
 		floor: req.query.floor,
 		date: req.query.date,
-		time: req.query.time
+		time: req.query.time,
+		uniqueID: req.query.uniqueID;
 	});
 	
 	// save the reservation to the database
