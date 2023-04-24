@@ -52,8 +52,9 @@ app.use('/addUserAccount', (req, res) =>{
 });
 
 //endpoint for creating a new user from "Add Reservations" request form
-app.use('/addUserReservation', (req, res) =>{
-	var newReservation = new Reservations ({
+app.use('/addUserReservation', (req, res) => {
+	var newReservation = new Reservations({
+		userEmail: req.query.userEmail,
 		roomName: req.query.roomName,
 		dorm: req.query.dorm,
 		floor: req.query.floor,
@@ -61,52 +62,21 @@ app.use('/addUserReservation', (req, res) =>{
 		time: req.query.time
 	});
 	
-	var user = {'Users' : req.query.Users};
-	//Find a way to get the users reservation array
-	//push the new reservation below onto that one
-	//set the old allReserve to the new array 
-	let u = {};
-		Users.findOne(user, (err, result) => {
-			if (err) {
-				u = {};
-			}
-			if (result == null) {
-				u = result;
-			}
-		});
-		Users.findOneAndUpdate(Users, { $set: {
-			allReserve : newReservation
-		}}, (err, result) => {
-			if (err) {
-				res.type('html').status(200);
-				console.log(err);
-			} 
-			
-			if (result == null) {
-				res.type('html').status(200);
-				console.log("original information found "+ err);
-			} else {
-				//res.send('successfully updated the common room information');
-				res.redirect('/allRooms');
-				//return;
-			}
-		});
-		
-		// save the reservation to the database
-		newReservation.save( (err) => { 
-			if (err) {
-				res.type('html').status(200);
-				res.write('uh oh: ' + err);
-				console.log(err);
-				res.end();
-			}
-			else {
-				// display the "successfull created" message
-				//res.send('successfully added ' + newUser.id + ' to the database');
-				res.redirect('/allReservations')
-			}
-		});
+	// save the reservation to the database
+	newReservation.save((err) => {
+		if (err) {
+			res.type('html').status(200);
+			res.write('uh oh: ' + err);
+			console.log(err);
+			res.end();
+		}
+		else {
+			// display the "successfull created" message
+			//res.send('successfully added ' + newUser.id + ' to the database');
+			res.redirect('/allReservations')
+		}
 	});
+});
 
 //endpoint for creating a new user from "Add User" request form
 app.use('/addUser', (req, res) =>{
@@ -131,7 +101,7 @@ app.use('/addUser', (req, res) =>{
 		else {
 			 // display the "successfull created" message
 			//res.send('successfully added ' + newUser.id + ' to the database');
-			res.redirect('/allUsers')
+			res.redirect('/public/redirect.html')
 		}
 	});
 });
@@ -151,6 +121,7 @@ app.use('/allUsers', (req, res) => {
 			res.end();
 			return;
 		    }
+			
 		    else {
 			res.type('html').status(200);
 			res.write('Here are the users in the database:');
@@ -158,7 +129,7 @@ app.use('/allUsers', (req, res) => {
 			// show all the users
 			u.forEach( (user) => {
 			    res.write('<li>');
-			    res.write('Name: ' + user.firstName + " "+ user.lastName + '; user ID: ' + user.id + '; graduation year: ' + user.classYear + '; email: ' + user.collegeEmail + '; user role: ' + user.role + '; reservations: ' + user.numReserve + "; password " + user.password);
+			    res.write('Name: ' + user.firstName + " " + user.lastName + '; user ID: ' + user.id + '; graduation year: ' + user.classYear + '; email: ' + user.collegeEmail + '; user role: ' + user.role + "; password " + user.password);
 			    // this creates a link to the /delete endpoint
 			    res.write(" <a href=\"/deleteUser?user=" + user.userID + "\">[Delete]</a>");
 			    res.write('</li>');
@@ -168,7 +139,7 @@ app.use('/allUsers', (req, res) => {
 			res.end();
 		    }
 		}
-	    }).sort({ 'user.id' : 'asc' });
+	}).sort({ 'user.id' : 'asc' });
 });
 
 app.use('/editUser', (req, res) => {
@@ -228,6 +199,23 @@ app.use('/users', (req, res) => {
 	});
 });
 
+//endpoint for deleting a user in the app
+app.use('/deleteAppUser', (req, res) => {
+	var User = { 'collegeEmail': req.query.collegeEmail };
+	Users.findOneAndDelete(User, (err, u) => {
+		if (err) {
+			console.log("error" + err);
+		} else if (!u) {
+			console.log("not a user" + err);
+		}
+		else {
+			console.log("success");
+		}
+	});
+	//res.send('successfully deleted user from the database');
+});
+
+
 //endpoint for deleting a user
 app.use('/deleteUser', (req, res) => {
 		var User = {'Users' : req.query.Users};
@@ -264,7 +252,7 @@ app.use('/allReservations', (req, res) => {
 			// show all the users
 			r.forEach( (reserv) => {
 			    res.write('<li>');
-			    res.write('Room Name: ' +  reserv.roomName + '; Dorm: ' + reserv.dorm + '; Floor: ' + reserv.floor + '; Date: ' + reserv.date + '; Time: ' + reserv.time);
+			    res.write('User email: ' + reserv.userEmail + '; Room Name: ' + reserv.roomName + '; Dorm: ' + reserv.dorm + '; Floor: ' + reserv.floor + '; Date: ' + reserv.date + '; Time: ' + reserv.time);
 			    // this creates a link to the /delete endpoint
 			    res.write(" <a href=\"/deleteRes?reserv=" + reserv.reservroomName + "\">[Delete]</a>");
 				res.write(" <a href=\"/public/editReservations.html\">[Edit]</a>");
@@ -280,6 +268,7 @@ app.use('/allReservations', (req, res) => {
 //endpoint for creating a new user from "Add Reservations" request form
 app.use('/addReservation', (req, res) =>{
 	var newReservation = new Reservations ({
+			userEmail: req.body.userEmail,
 			roomName: req.body.roomName,
 			dorm: req.body.dorm,
 			floor: req.body.floor,
@@ -316,12 +305,26 @@ app.use('/reservation', (req, res) => {
 		else {
 			var returnArray = [];
 			r.forEach( (rsv) => {
-				returnArray.push( {"roomName" : rsv.roomName, "dorm" : rsv.dorm, "floor" : rsv.floor, "date" : rsv.date, "time" : rsv.time} );
+				returnArray.push({ "userEmail": rsv.userEmail, "roomName": rsv.roomName, "dorm": rsv.dorm, "floor": rsv.floor, "date": rsv.date, "time": rsv.time });
 			});
 			res.json(returnArray);
 		}
 	});
 });
+
+// endpoint for deleting a reservation in app
+app.use('/deleteResApp', (req, res) => {
+	var userEmail = { 'userEmail': req.query.userEmail };
+	Reservations.findOneAndDelete(userEmail, (err, res) => {
+		if (err) {
+			console.log(err);
+		} else if (!res) {
+			console.log("no reservation made" + err);
+		}
+	});
+	res.redirect('/allReservations');
+});
+
 
 // endpoint for deleting a reservation
 app.use('/deleteRes', (req, res) => {

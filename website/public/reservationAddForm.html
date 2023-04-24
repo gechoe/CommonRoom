@@ -1,3 +1,37 @@
+Skip to content
+Search or jump to…
+Pulls
+Issues
+Codespaces
+Marketplace
+Explore
+ 
+@gechoe 
+gechoe
+/
+CommonRoom
+Public
+Cannot fork because you own this repository and are not a member of any organizations.
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+More
+Beta Try the new code view
+CommonRoom/website/public/reservationAddForm.html
+@ArielShultz
+ArielShultz Update reservationAddForm.html
+Latest commit 436e6ae 7 hours ago
+ History
+ 2 contributors
+@ArielShultz@mahaattique
+39 lines (31 sloc)  1.52 KB
+ 
+
 <html>
    <body class="reservation-add-form-page">
       <form action="/addReservation" method="post">
@@ -19,6 +53,10 @@
             
             <br><label for="time">Time: </label>
             <input type="text" placeholder="Enter time: " name="time" required></br>
+
+            <br><label for="userEmail">User Email: </label>
+            <input type="text" placeholder="Enter user email: " name="userEmail" required></br>
+
             <br><div class="clearfix">
                <input type="submit" value="Submit form!">
             </div></br>
