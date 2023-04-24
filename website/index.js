@@ -273,7 +273,8 @@ app.use('/addReservation', (req, res) =>{
 			dorm: req.body.dorm,
 			floor: req.body.floor,
 			date: req.body.date,
-			time: req.body.time
+			time: req.body.time,
+			uniqueID : req.body.uniqueID
 		    });
 
 		// save the user to the database
