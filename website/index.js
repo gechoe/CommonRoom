@@ -312,14 +312,14 @@ app.use('/reservation', (req, res) => {
 	});
 });
 
-// endpoint for deleting a reservation in app
+// endpoint for deleting a reservation in app (separate from the delete res for the website)
 app.use('/deleteResApp', (req, res) => {
 	var userEmail = { 'userEmail': req.query.userEmail };
 	Reservations.findOneAndDelete(userEmail, (err, res) => {
 		if (err) {
 			console.log(err);
 		} else if (!res) {
-			console.log("no reservation made" + err);
+			console.log("no user reservation made" + err);
 		}
 	});
 	res.redirect('/allReservations');
